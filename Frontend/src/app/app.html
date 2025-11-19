@@ -1,0 +1,67 @@
+<main class="calculator">
+  <form class="display">
+
+    <!-- Function Input -->
+    <label for="function-input">
+      Function:
+      <input type="text" class="input-bar" id="function-input">
+    </label>
+
+    <!-- Method Selection -->
+    <div class="radio-group">
+      <p>Method:</p>
+
+      <div class="radio-section">
+        <label class="radio-label">
+          <input type="radio" name="method" value="bisection">
+          Bisection Method
+        </label>
+
+        <label class="radio-label">
+          <input type="radio" name="method" value="false-position">
+          False Position Method
+        </label>
+      </div>
+      
+    </div>
+
+    <!-- Tolerance Input -->
+    <label for="tolerance-input">
+      Tolerance:
+      <input type="text" class="input-bar" id="tolerance-input">
+    </label>
+
+    <!-- Error Type -->
+    <div class="radio-group">
+      <p>Error Type:</p>
+
+      <div class="radio-section">
+        <label class="radio-label">
+          <input type="radio" name="error-type" value="absolute">
+          Absolute Error
+        </label>
+
+        <label class="radio-label">
+          <input type="radio" name="error-type" value="relative">
+          Relative Percent Error
+        </label>
+      </div>
+      
+    </div>
+
+    <!-- Interval Inputs -->
+    <div class="Interval-input">
+      <label for="from-input">
+        From:
+        <input type="text" class="input-box" id="from-input">
+      </label>
+
+      <label for="to-input">
+        To:
+        <input type="text" class="input-box" id="to-input">
+      </label>
+    </div>
+    
+
+  </form>
+</main>
