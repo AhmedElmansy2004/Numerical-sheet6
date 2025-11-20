@@ -1,67 +1,53 @@
-<main class="calculator">
-  <form class="display">
+<form class="display" (ngSubmit)="calculate()">
 
-    <!-- Function Input -->
-    <label for="function-input">
-      Function:
-      <input type="text" class="input-bar" id="function-input">
-    </label>
+  <label>
+    Function:
+    <input type="text" class="input-bar" name="functionInput" [(ngModel)]="functionInput">
+  </label>
 
-    <!-- Method Selection -->
-    <div class="radio-group">
-      <p>Method:</p>
-
-      <div class="radio-section">
-        <label class="radio-label">
-          <input type="radio" name="method" value="bisection">
-          Bisection Method
-        </label>
-
-        <label class="radio-label">
-          <input type="radio" name="method" value="false-position">
-          False Position Method
-        </label>
-      </div>
-      
-    </div>
-
-    <!-- Tolerance Input -->
-    <label for="tolerance-input">
-      Tolerance:
-      <input type="text" class="input-bar" id="tolerance-input">
-    </label>
-
-    <!-- Error Type -->
-    <div class="radio-group">
-      <p>Error Type:</p>
-
-      <div class="radio-section">
-        <label class="radio-label">
-          <input type="radio" name="error-type" value="absolute">
-          Absolute Error
-        </label>
-
-        <label class="radio-label">
-          <input type="radio" name="error-type" value="relative">
-          Relative Percent Error
-        </label>
-      </div>
-      
-    </div>
-
-    <!-- Interval Inputs -->
-    <div class="Interval-input">
-      <label for="from-input">
-        From:
-        <input type="text" class="input-box" id="from-input">
+  <div class="radio-group">
+    <p>Method:</p>
+    <div class="radio-section">
+      <label class="radio-label">
+        <input type="radio" name="method" value="bisection" [(ngModel)]="selectedMethod">
+        Bisection Method
       </label>
-
-      <label for="to-input">
-        To:
-        <input type="text" class="input-box" id="to-input">
+      <label class="radio-label">
+        <input type="radio" name="method" value="false-position" [(ngModel)]="selectedMethod">
+        False Position Method
       </label>
     </div>
-    
+  </div>
 
-  </form>
-</main>
+  <label>
+    Tolerance:
+    <input type="text" class="input-bar" name="toleranceInput" [(ngModel)]="toleranceInput">
+  </label>
+
+  <div class="radio-group">
+    <p>Error Type:</p>
+    <div class="radio-section">
+      <label class="radio-label">
+        <input type="radio" name="errorType" value="absolute" [(ngModel)]="selectedErrorType">
+        Absolute Error
+      </label>
+      <label class="radio-label">
+        <input type="radio" name="errorType" value="relative" [(ngModel)]="selectedErrorType">
+        Relative Percent Error
+      </label>
+    </div>
+  </div>
+
+  <div class="Interval-input">
+    <label>
+      From:
+      <input type="text" class="input-box" name="fromInput" [(ngModel)]="fromInput">
+    </label>
+    <label>
+      To:
+      <input type="text" class="input-box" name="toInput" [(ngModel)]="toInput">
+    </label>
+  </div>
+
+  <button type="submit">Calculate</button>
+</form>
