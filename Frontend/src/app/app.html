@@ -49,5 +49,12 @@
     </label>
   </div>
 
-  <button type="submit">Calculate</button>
+  <button type="submit" class="calculate-btn" (click)="calculate()">Calculate</button>
+
+  @if(result != null){
+    <div class="result-container">
+      <h2>Calculated Root: {{ result }}</h2>
+    </div>
+  }
+
 </form>

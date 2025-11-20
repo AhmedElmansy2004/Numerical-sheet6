@@ -7,7 +7,7 @@
 
 .display {
     width: 550px;
-    height: 420px;
+    max-height: 550px;
     background-color: #f7f7f7;
     border-radius: 15px;
     box-shadow: 1px 1px 10px 0.5px rgba(0, 0, 0, 0.504);
@@ -24,6 +24,9 @@
     gap: 30px;
 
     font-size: 20px;
+
+    overflow: hidden;
+    transition: height 0.5s ease-in-out;
 }
 
 .radio-group{
@@ -194,4 +197,60 @@ input[type="text"]{
   opacity: 1;
 }
 
+.calculate-btn {
+  background-color: #4d7cff;      
+  color: white;                   
+  font-size: 20px;                
+  font-weight: 600;
+  padding: 12px 25px;             
+  border: none;                  
+  border-radius: 10px;           
+  cursor: pointer;               
+  transition: all 0.3s ease;      
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.calculate-btn:hover {
+  background-color: #3a5bcc;      
+  box-shadow: 0 6px 10px rgba(0, 0, 0, 0.15);
+  transform: translateY(-2px);    
+}
+
+.calculate-btn:active {
+  background-color: #2d45a0;      
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+  transform: translateY(0);       
+}
+
+.result-container {
+  margin-top: 5px;
+  padding: 15px 25px;
+  border-radius: 12px;
+  background-color: #e0f0ff;
+  border: 2px solid #4d7cff;
+  text-align: center;
+  font-size: 22px;
+  font-weight: 600;
+  color: #1a3a5d;
+  box-shadow: 1px 2px 8px rgba(0, 0, 0, 0.2);
+  transform: translateY(20px);
+  animation: fadeInUp 0.5s forwards;
+}
+
+.result-container h2 {
+  margin: 0 0 0 0;
+  font-size: 28px;
+  color: #0b2244;
+}
+
+@keyframes fadeInUp {
+  0% {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
 

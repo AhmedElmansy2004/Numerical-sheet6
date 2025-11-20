@@ -11,7 +11,7 @@ export interface PolynomialTerm {
   providedIn: 'root'
 })
 export class AppService {
-  private apiUrl = 'http://localhost:3000/calculate'; // replace with your backend URL
+  private apiUrl = 'http://127.0.0.1:8000';
 
   constructor(private http: HttpClient) {}
 
@@ -19,19 +19,19 @@ export class AppService {
   calculatePolynomial(
     terms: PolynomialTerm[],
     tolerance: number,
-    from: number,
-    to: number,
+    from_value: number,
+    to_value: number,
     method: string,
     errorType: string
   ): Observable<any> {
     const payload = {
       terms,
       tolerance,
-      from,
-      to,
+      from_value,
+      to_value,
       method,
       errorType
     };
-    return this.http.post(this.apiUrl, payload);
+    return this.http.post(`${this.apiUrl}/calculate`, payload);
   }
 }

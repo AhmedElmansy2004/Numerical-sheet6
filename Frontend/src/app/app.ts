@@ -1,12 +1,13 @@
 import { Component, signal } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
 import { FormsModule } from '@angular/forms';
+import { HttpClientModule } from '@angular/common/http';
 import { AppService, PolynomialTerm } from '../services/app.service';
 
 @Component({
   selector: 'app-root',
   standalone: true,
-  imports: [RouterOutlet, FormsModule],
+  imports: [RouterOutlet, FormsModule, HttpClientModule],
   templateUrl: './app.html',
   styleUrls: ['./app.css']
 })
@@ -19,6 +20,8 @@ export class App {
   toleranceInput: string = '';
   fromInput: string = '';
   toInput: string = '';
+
+  result: number | null = null;
 
   // Radio selections
   selectedMethod: string = 'bisection';
@@ -49,8 +52,15 @@ export class App {
       if(term.includes('x')){
         const [coefPart, expPart] = term.split('x^');
 
-        coefficient = ((coefPart === '')? 1: parseFloat(coefPart)) * sign;
-        exponent = (expPart === undefined)? 1: parseFloat(expPart);
+        if(expPart.includes('/'))
+          coefficient = (parseFloat(coefPart[0]) / parseFloat(coefPart[2])) * sign;
+        else
+          coefficient = ((coefPart === '')? 1: parseFloat(coefPart)) * sign;
+
+        if(expPart.includes('/'))
+          exponent = (parseFloat(expPart[0]) / parseFloat(expPart[2]));
+        else
+          exponent = (expPart === undefined)? 1: parseFloat(expPart);
       }
       else {
         coefficient = parseFloat(term) * sign;
@@ -72,6 +82,9 @@ export class App {
     console.log('Method:', this.selectedMethod);
     console.log('Error Type:', this.selectedErrorType);
 
+    const method = (this.selectedMethod === 'bisection')? 'bt': 'fp';
+    const errorType = (this.selectedErrorType === 'absolute')? 'abs': 'rel'; 
+
     const polynomial = this.parseFunction(this.functionInput);
 
     console.log(polynomial)
@@ -80,11 +93,12 @@ export class App {
     const from = parseFloat(this.fromInput);
     const to = parseFloat(this.toInput);
 
-    this.appservice.calculatePolynomial(polynomial, tol, from, to, this.selectedMethod, this.selectedErrorType).subscribe({
-      next: res => console.log('Backend result:', res),
+    this.appservice.calculatePolynomial(polynomial, tol, from, to, method, errorType).subscribe({
+      next: res => {
+        this.result = res.root;
+        console.log('Backend result:', res);
+      },
       error: err => console.error('Error:', err)
     })
   }
-
-
 }
