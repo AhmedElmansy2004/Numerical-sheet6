@@ -52,15 +52,21 @@ export class App {
       if(term.includes('x')){
         const [coefPart, expPart] = term.split('x^');
 
-        if(expPart.includes('/'))
+        if(coefPart.includes('/'))
           coefficient = (parseFloat(coefPart[0]) / parseFloat(coefPart[2])) * sign;
         else
           coefficient = ((coefPart === '')? 1: parseFloat(coefPart)) * sign;
 
-        if(expPart.includes('/'))
-          exponent = (parseFloat(expPart[0]) / parseFloat(expPart[2]));
-        else
-          exponent = (expPart === undefined)? 1: parseFloat(expPart);
+        if(expPart === undefined)
+          exponent = 1
+        else{
+          if(expPart.includes('/'))
+            exponent = (parseFloat(expPart[0]) / parseFloat(expPart[2]));
+          else
+            exponent = parseFloat(expPart);
+        }
+
+        
       }
       else {
         coefficient = parseFloat(term) * sign;
