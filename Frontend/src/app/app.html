@@ -5,50 +5,82 @@
     <input type="text" class="input-bar" name="functionInput" [(ngModel)]="functionInput">
   </label>
 
-  <div class="radio-group">
-    <p>Method:</p>
-    <div class="radio-section">
-      <label class="radio-label">
-        <input type="radio" name="method" value="bisection" [(ngModel)]="selectedMethod">
-        Bisection Method
-      </label>
-      <label class="radio-label">
-        <input type="radio" name="method" value="false-position" [(ngModel)]="selectedMethod">
-        False Position Method
-      </label>
-    </div>
-  </div>
+  <label>
+    Method:
+    <select [(ngModel)]="method" name="method" class="input-bar">
+        <option value="" hidden>Select a method...</option>
+        
+        <option value="bisection">Bisection</option>
+        <option value="false position">False Position</option>
+        <option value="fixed point">Fixed Point</option>
+        <option value="orginal newton">Newton-Raphson</option>
+        <option value="modified newton">Newton-Raphson(Mod)</option>
+        <option value="secant">Secant</option>
+      </select>
+  </label>
+
+  <label>
+    Precision:
+    <input type="number" class="input-bar" name="precision" [(ngModel)]="precision">
+  </label>
 
   <label>
     Tolerance:
-    <input type="text" class="input-bar" name="toleranceInput" [(ngModel)]="toleranceInput">
+    <input type="number" class="input-bar" name="toleranceInput" [(ngModel)]="tolerance">
   </label>
 
-  <div class="radio-group">
-    <p>Error Type:</p>
-    <div class="radio-section">
-      <label class="radio-label">
-        <input type="radio" name="errorType" value="absolute" [(ngModel)]="selectedErrorType">
-        Absolute Error
+  <label>
+    Maximum Iterations:
+    <input type="number" class="input-bar" name="maxIterationsInput" [(ngModel)]="maxIterations">
+  </label>
+
+  @if(method == "bisection" || method == "false position"){
+    <div class="method-parameters">
+      <label>
+        From:
+        <input type="text" class="input-box" name="fromInput" [(ngModel)]="fromInput">
       </label>
-      <label class="radio-label">
-        <input type="radio" name="errorType" value="relative" [(ngModel)]="selectedErrorType">
-        Relative Percent Error
+      <label>
+        To:
+        <input type="text" class="input-box" name="toInput" [(ngModel)]="toInput">
       </label>
     </div>
-  </div>
+  }
+  @else if (method == "orginal newton" || method == "modified newton") {
+    <div class="method-parameters">
+      <label>
+        Initial Guess:
+        <input type="text" class="input-box" name="fromInput" [(ngModel)]="fromInput">
+      </label>
+    </div>
+  }
+  @else if (method == "fixed point") {
+    <div class="method-parameters">
+      <label>
+        Initial Guess:
+        <input type="text" class="input-box" name="fromInput" [(ngModel)]="fromInput">
+      </label>
+      
+      <label>
+        Enter G(x):
+        <input type="text" class="input-bar" name="fromInput" [(ngModel)]="fromInput">
+      </label>
+    </div>
+  }
+  @else if (method == "secant") {
+    <div class="method-parameters">
+      <label>
+        Initial Guess 1:
+        <input type="text" class="input-box" name="fromInput" [(ngModel)]="fromInput">
+      </label>
 
-  <div class="Interval-input">
-    <label>
-      From:
-      <input type="text" class="input-box" name="fromInput" [(ngModel)]="fromInput">
-    </label>
-    <label>
-      To:
-      <input type="text" class="input-box" name="toInput" [(ngModel)]="toInput">
-    </label>
-  </div>
-
+      <label>
+        Initial Guess 2:
+        <input type="text" class="input-box" name="fromInput" [(ngModel)]="fromInput">
+      </label>
+    </div>
+  }
+  
   <button type="submit" class="calculate-btn" (click)="calculate()">Calculate</button>
 
   @if(result != null){

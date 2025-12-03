@@ -1,13 +1,12 @@
 import { Component, signal } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
 import { FormsModule } from '@angular/forms';
-import { HttpClientModule } from '@angular/common/http';
-import { AppService, PolynomialTerm } from '../services/app.service';
+import { HttpClient } from '@angular/common/http';
 
 @Component({
   selector: 'app-root',
   standalone: true,
-  imports: [RouterOutlet, FormsModule, HttpClientModule],
+  imports: [RouterOutlet, FormsModule],
   templateUrl: './app.html',
   styleUrls: ['./app.css']
 })
@@ -17,19 +16,19 @@ export class App {
 
   // Text inputs
   functionInput: string = '';
-  toleranceInput: string = '';
+  precision: number = 17;
+  tolerance: number = 8;
+  maxIterations: number = 50;
   fromInput: string = '';
   toInput: string = '';
 
   result: number | null = null;
 
-  // Radio selections
-  selectedMethod: string = 'bisection';
-  selectedErrorType: string = 'absolute';
+  method: string = '';
 
-  constructor(private appservice: AppService){}
+  constructor(private http: HttpClient){}
 
-  parseFunction(func: string){
+  /*parseFunction(func: string){
     func = func.toLowerCase();
     func = func.replace(/\s+/g, '');
 
@@ -77,34 +76,33 @@ export class App {
     });
 
     return terms;
-  }
+  }*/
 
   // Submit function
   calculate() {
-    console.log('Function:', this.functionInput);
-    console.log('Tolerance:', this.toleranceInput);
-    console.log('From:', this.fromInput);
-    console.log('To:', this.toInput);
-    console.log('Method:', this.selectedMethod);
-    console.log('Error Type:', this.selectedErrorType);
 
-    const method = (this.selectedMethod === 'bisection')? 'bt': 'fp';
-    const errorType = (this.selectedErrorType === 'absolute')? 'abs': 'rel'; 
+    const method = (this.method === 'bisection')? 'bt': 'fp';
 
-    const polynomial = this.parseFunction(this.functionInput);
-
-    console.log(polynomial)
-
-    const tol = parseFloat(this.toleranceInput);
+    const tol = this.tolerance;
     const from = parseFloat(this.fromInput);
     const to = parseFloat(this.toInput);
 
-    this.appservice.calculatePolynomial(polynomial, tol, from, to, method, errorType).subscribe({
-      next: res => {
+    const func = this.functionInput;
+
+    const payload = {
+      func,
+      tol,
+      from,
+      to,
+      method,
+    };
+
+    this.http.post('http://127.0.0.1:8000/calculate', payload).subscribe({
+      next: (res: any) => {
         this.result = res.root;
         console.log('Backend result:', res);
       },
-      error: err => console.error('Error:', err)
+      error: (err: any) => console.error('Error:', err)
     })
   }
 }
