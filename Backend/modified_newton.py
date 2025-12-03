@@ -3,7 +3,7 @@ from essential_functions import getValue, getDerivative, getSecondDerivative,get
 # to do: fix if derivaitive = 0
 
 
-def do_original_newton(func, intial, precision, epsilon=0.00001, maxIterations = 50):
+def do_modified_newton(func, intial, precision, epsilon=0.00001, maxIterations = 50):
 
     x_old = round(intial, precision)
 

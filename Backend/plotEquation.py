@@ -53,4 +53,5 @@ def plot_equation(equation, equation2=None):
 if __name__ == "__main__":
     equation1 = "(x-5)"
     equation2 = "x**3 - 3*x + 2"
-    plot_equation(equation1)
+    equation3 = 'np.sin(x)'
+    plot_equation(equation2)

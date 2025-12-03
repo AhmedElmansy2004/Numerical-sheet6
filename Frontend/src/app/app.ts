@@ -15,16 +15,21 @@ export class App {
   protected readonly title = signal('Frontend');
 
   // Text inputs
-  functionInput: string = '';
-  precision: number = 17;
-  tolerance: number = 8;
-  maxIterations: number = 50;
-  fromInput: string = '';
-  toInput: string = '';
-
-  result: number | null = null;
-
   method: string = '';
+  functionInput: string = '';
+  gx: string = '';
+  precision: number = 17;
+  tolerance: number = 0.00001;
+  maxIterations: number = 50;
+  fromInput: number = 0;
+  toInput: number = 1;
+  intialGuess: number = 0;
+  intialGuess2: number = 0;
+
+  // Answer from backend
+  response :any = null;
+
+  
 
   constructor(private http: HttpClient){}
 
@@ -81,28 +86,95 @@ export class App {
   // Submit function
   calculate() {
 
-    const method = (this.method === 'bisection')? 'bt': 'fp';
-
-    const tol = this.tolerance;
-    const from = parseFloat(this.fromInput);
-    const to = parseFloat(this.toInput);
-
     const func = this.functionInput;
+    const tol = this.tolerance;
+    const from_value = this.fromInput;
+    const to_value = this.toInput;
+    const method = this.method;
+    const precision = this.precision;
+    const maxIterations = this.maxIterations;
+    const intialGuess = this.intialGuess;
+    const intialGuess2 = this.intialGuess2;
+    const gx = this.gx;
 
-    const payload = {
-      func,
-      tol,
-      from,
-      to,
-      method,
-    };
+    const apiURL = 'http://127.0.0.1:8000/bracketing';
 
-    this.http.post('http://127.0.0.1:8000/calculate', payload).subscribe({
-      next: (res: any) => {
-        this.result = res.root;
-        console.log('Backend result:', res);
-      },
-      error: (err: any) => console.error('Error:', err)
-    })
+    if(this.method == 'bisection' || this.method == 'false position'){
+
+      const bracketing = {
+        method,
+        func,
+        from_value,
+        to_value,
+        precision,
+        tol,
+        maxIterations
+      };
+
+      this.http.post('${apiURL}/bracketing', bracketing).subscribe({
+        next: (res: any) => {
+          this.response = res;
+          console.log('Backend result:', res);
+        },
+        error: (err: any) => console.error('Error:', err)
+      })
+    }
+    else if(this.method == 'orginal newton' || this.method == 'modified newton'){
+
+      const newton = {
+        method,
+        func,
+        intialGuess,
+        precision,
+        tol,
+        maxIterations
+      };
+
+      this.http.post('${apiURL}/newton', newton).subscribe({
+        next: (res: any) => {
+          this.response = res;
+          console.log('Backend result:', res);
+        },
+        error: (err: any) => console.error('Error:', err)
+      })
+    }
+    else if(this.method == 'fixed'){
+
+      const fixed = {
+        func,
+        gx,
+        intialGuess,
+        precision,
+        tol,
+        maxIterations
+      };
+
+      this.http.post('${apiURL}/fixed', fixed).subscribe({
+        next: (res: any) => {
+          this.response = res;
+          console.log('Backend result:', res);
+        },
+        error: (err: any) => console.error('Error:', err)
+      })
+    }
+    else if(this.method == 'secant'){
+
+      const secant = {
+        func,
+        intialGuess,
+        intialGuess2,
+        precision,
+        tol,
+        maxIterations
+      };
+
+      this.http.post('${apiURL}/secant', secant).subscribe({
+        next: (res: any) => {
+          this.response = res;
+          console.log('Backend result:', res);
+        },
+        error: (err: any) => console.error('Error:', err)
+      })
+    }
   }
 }

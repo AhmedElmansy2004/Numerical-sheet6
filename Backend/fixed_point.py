@@ -1,6 +1,6 @@
 from essential_functions import getValue, getEPS
 
-def do_fixed_value(gx, intial, precision, epsilon=0.00001, maxIterations = 50):
+def do_fixed_point(gx, intial, precision, epsilon=0.00001, maxIterations = 50):
 
     x_old = round(intial, precision)
     x_new = round(getValue(gx, x_old), precision)
