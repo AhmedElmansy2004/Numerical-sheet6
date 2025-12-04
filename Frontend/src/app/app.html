@@ -1,4 +1,4 @@
-<form class="display" (ngSubmit)="calculate()">
+<div class="display">
 
   <label>
     Function:
@@ -34,6 +34,11 @@
     <input type="number" class="input-bar" name="maxIterationsInput" [(ngModel)]="maxIterations">
   </label>
 
+  <div class="show-steps">
+    <label for="showSteps">Show steps:</label>
+    <input type="checkbox" id="showSteps" name="showSteps" [(ngModel)]="showSteps">
+  </div>
+
   @if(method == "bisection" || method == "false position"){
     <div class="method-parameters">
       <label>
@@ -46,7 +51,7 @@
       </label>
     </div>
   }
-  @else if (method == "orginal newton" || method == "modified newton") {
+  @else if(method == "orginal newton" || method == "modified newton") {
     <div class="method-parameters">
       <label>
         Initial Guess:
@@ -54,7 +59,7 @@
       </label>
     </div>
   }
-  @else if (method == "fixed point") {
+  @else if(method == "fixed point") {
     <div class="method-parameters">
       <label>
         Initial Guess:
@@ -67,7 +72,7 @@
       </label>
     </div>
   }
-  @else if (method == "secant") {
+  @else if(method == "secant") {
     <div class="method-parameters">
       <label>
         Initial Guess 1:
@@ -81,12 +86,16 @@
     </div>
   }
   
-  <button type="submit" class="calculate-btn" (click)="calculate()">Calculate</button>
+  <button type="button" class="calculate-btn" (click)="calculate()">Calculate</button>
 
   @if(response != null){
     <div class="result-container">
-      <h2>Calculated Root: {{ response }}</h2>
+      <h2>Calculated Root: {{ response.result }}</h2>
+      <h2>Number of Iterations: {{ response.iterations }}</h2>
+      <h2>Approximate Relative Error: {{ response.rel_err }}</h2>
+      <h2>Correct Significant Figures: {{ response.precision }}</h2>
+      <h2>Execution Time: {{ response.time }}</h2>
     </div>
   }
 
-</form>
+</div>

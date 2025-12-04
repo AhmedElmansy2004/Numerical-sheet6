@@ -53,10 +53,10 @@ def do_modified_newton(func, intial, precision, epsilon=0.00001, maxIterations =
             "eps": relative_error
         })
 
-        if(getValue(func, x_old) == 0 or relative_error <= epsilon):
+        if(getValue(func, x_new) == 0 or relative_error <= epsilon):
             break
 
-    if(getValue(func, x_old) == 0 or relative_error <= epsilon):
+    if(getValue(func, x_new) == 0 or relative_error <= epsilon):
         return True, x_new, i+1, relative_error, precision, solution_steps 
     else:
         return False, x_new, i+1, relative_error, precision, solution_steps

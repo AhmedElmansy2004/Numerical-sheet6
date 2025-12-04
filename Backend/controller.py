@@ -3,7 +3,7 @@ from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel
 from typing import List, Any, Union
 
-from Backend.bisection import *
+from bisection import *
 from false_position import *
 from original_newton import *
 from modified_newton import *
@@ -16,7 +16,7 @@ app = FastAPI()
 
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["http://localhost:4200"],
+    allow_origins=["http://localhost:4200", "http://127.0.0.1:4200"],
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
@@ -67,7 +67,7 @@ class Response(BaseModel):
     rel_err: float
     precision: float
     time: float
-    steps: Union[List[Any], None] = List[Any]
+    steps: Union[List[Any], None] = None
 
 @app.post("/bracketing")
 def calculate(request: BracketingRequest):
@@ -75,20 +75,20 @@ def calculate(request: BracketingRequest):
     start = time()
     
     if(request.method == 'bisection'):
-        valid, result, iterations, rel_error, precision, steps = do_bisection(request.func,
-                              request.from_value, 
-                              request.to_value, 
-                              request.precision, 
-                              request.tol, 
-                              request.maxIterations)
+        valid, result, iterations, rel_err, precision, steps = do_bisection(request.func,
+                                                                            request.from_value, 
+                                                                            request.to_value, 
+                                                                            request.precision, 
+                                                                            request.tol, 
+                                                                            request.maxIterations)
 
     elif(request.method == 'false position'):
         valid, result, iterations, rel_err, precision, steps = do_false_position(request.func,
-                              request.from_value, 
-                              request.to_value, 
-                              request.precision, 
-                              request.tol, 
-                              request.maxIterations)
+                                                                                    request.from_value, 
+                                                                                    request.to_value, 
+                                                                                    request.precision, 
+                                                                                    request.tol, 
+                                                                                    request.maxIterations)
 
     else:
         raise HTTPException(status_code=404, detail='choose a valid method')
@@ -123,64 +123,116 @@ def calculate(request: NewtonRequest):
     start = time()
     
     if(request.method == 'orginal newton'):
-        result = do_original_newton(request.func,
-                              request.intialGuess, 
-                              request.precision, 
-                              request.tol, 
-                              request.maxIterations)
+        valid, result, iterations, rel_err, precision, steps = do_original_newton(request.func,
+                                                                                    request.intialGuess, 
+                                                                                    request.precision, 
+                                                                                    request.tol, 
+                                                                                    request.maxIterations)
 
     elif(request.method == 'modified newton'):
-        result = do_modified_newton(request.func,
-                              request.from_value, 
-                              request.to_value, 
-                              request.precision, 
-                              request.tol, 
-                              request.maxIterations)
+        valid, result, iterations, rel_err, precision, steps = do_modified_newton(request.func,
+                                                                                    request.intialGuess, 
+                                                                                    request.precision, 
+                                                                                    request.tol, 
+                                                                                    request.maxIterations)
 
     else:
         raise HTTPException(status_code=404, detail='choose a valid method')
     
     end = time()
+
+    message = ""
     
-    return {
-        "status": "ok",
-        "root": result
-    }
+    if(not valid):
+        result = None
+        message = "Diverge"
+        
+    if(not request.steps):
+        steps = None
+
+    response: Response = Response(
+        status='ok',
+        message=message,
+        result=result,
+        iterations=iterations,
+        rel_err=rel_err,
+        precision=precision,
+        time= end - start,
+        steps=steps
+    ) 
+    
+    return response
 
 @app.post("/fixed")
 def calculate(request: FixedRequest):
 
     start = time()
 
-    result = do_fixed_point(request.gx,
-                            request.intialGuess, 
-                            request.precision, 
-                            request.tol, 
-                            request.maxIterations)
+    valid, result, iterations, rel_err, precision, steps = do_fixed_point(request.gx,
+                                                                            request.intialGuess, 
+                                                                            request.precision, 
+                                                                            request.tol, 
+                                                                            request.maxIterations)
     
     end = time()
 
-    return {
-        "status": "ok",
-        "root": result
-    }
+    message = ""
+
+    if(not valid):
+        result = None
+        message = "Diverge"
+        
+    if(not request.steps):
+        steps = None
+
+    response: Response = Response(
+        status='ok',
+        message=message,
+        result=result,
+        iterations=iterations,
+        rel_err=rel_err,
+        precision=precision,
+        time= end - start,
+        steps=steps
+    ) 
+    
+    return response
+
 
 @app.post("/secant")
 def calculate(request: SecantRequest):
 
     start = time()
 
-    result = do_secant(request.func,
-                            request.intialGuess,
-                            request.intialGuess2, 
-                            request.precision, 
-                            request.tol, 
-                            request.maxIterations)
+    valid, result, iterations, rel_err, precision, steps = do_secant(request.func,
+                                                                        request.intialGuess,
+                                                                        request.intialGuess2, 
+                                                                        request.precision, 
+                                                                        request.tol, 
+                                                                        request.maxIterations)
     
     end = time()
+
+    message = ""
     
-    return {
-        "status": "ok",
-        "root": result
-    }
+    if(not valid):
+        result = None
+        message = "Diverge"
+        
+    if(not request.steps):
+        steps = None
+
+    response: Response = Response(
+        status='ok',
+        message=message,
+        result=result,
+        iterations=iterations,
+        rel_err=rel_err,
+        precision=precision,
+        time= end - start,
+        steps=steps
+    ) 
+    
+    return response
+
 

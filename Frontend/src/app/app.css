@@ -7,7 +7,7 @@
 
 .display {
     width: 550px;
-    max-height: 550px;
+    min-height: 550px;
     background-color: #f7f7f7;
     border-radius: 15px;
     box-shadow: 1px 1px 10px 0.5px rgba(0, 0, 0, 0.504);
@@ -27,18 +27,6 @@
 
     overflow: hidden;
     transition: height 0.5s ease-in-out;
-}
-
-.radio-group{
-    display: flex;
-    align-items: center;
-    gap: 40px;
-}
-
-.radio-section{
-    display: flex;
-    flex-direction: column;
-    gap: 10px;
 }
 
 input[type="text"]{
@@ -74,6 +62,20 @@ input[type="text"]{
   box-shadow: 0 0 0 2px rgba(77,124,255,0.2);
 }
 
+.show-steps{
+    display: flex;
+    gap: 10px;
+}
+
+
+.show-steps input{
+    width: 28px;
+    height: 28px;
+    scale: 1;
+    transform: translateY(4px);
+}
+
+
 .method-parameters{
   display: flex;
   flex-direction: column;
@@ -89,7 +91,6 @@ input[type="text"]{
   gap: 15px;
 
 }
-
 
 .calculate-btn {
   background-color: #4d7cff;      
