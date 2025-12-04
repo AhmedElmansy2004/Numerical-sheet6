@@ -27,47 +27,47 @@ class BracketingRequest(BaseModel):
     func: str
     from_value: float
     to_value: float
-    precision: float
+    precision: int
     tol: float
-    maxIterations: float
+    maxIterations: int
     steps: bool
 
 class NewtonRequest(BaseModel):
     method: str
     func: str
     intialGuess: float
-    precision: float
+    precision: int
     tol: float
-    maxIterations: float
+    maxIterations: int
     steps: bool
 
 class FixedRequest(BaseModel):
     func: str
     gx: str
     intialGuess: float
-    precision: float
+    precision: int
     tol: float
-    maxIterations: float
+    maxIterations: int
     steps: bool
 
 class SecantRequest(BaseModel):
     func: str
     intialGuess: float
     intialGuess2: float
-    precision: float
+    precision: int
     tol: float
-    maxIterations: float
+    maxIterations: int
     steps: bool
 
 class Response(BaseModel):
     status: str
     message: str
-    result: float
+    result: Union[float, None]
     iterations: int
     rel_err: float
-    precision: float
+    precision: int
     time: float
-    steps: Union[List[Any], None] = None
+    steps: Union[List[Any], None] = List[Any]
 
 @app.post("/bracketing")
 def calculate(request: BracketingRequest):

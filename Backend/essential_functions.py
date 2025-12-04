@@ -47,13 +47,17 @@ def getDerivative(func, x_val):
     x = symbols('x')
     func = convert(func)
     expr = parse_expr(func)
-    return float(expr.diff(x, x_val).evalf())
+    diff_x = expr.diff(x)
+    return float(diff_x.subs(x, x_val).evalf())
+    
 
 def getSecondDerivative(func, x_val):
     x = symbols('x')
     func = convert(func)
     expr = parse_expr(func)
-    return float(expr.diff(x, x_val, 2).evalf())
+    diff_x = expr.diff(x, derivative_count=2)
+    return float(diff_x.subs(x, x_val).evalf())
+    
 
 def getEPS(current, previous):
     return abs((current - previous) / current) * 100

@@ -15,7 +15,7 @@ def do_secant(func, intial1, intial2, precision, epsilon, maxIterations):
     res2 = y_old2 - y_old1
 
     # diverge
-    if(res == 0): return False, x_old2, 0, -1, precision, None
+    if(res2 == 0): return False, x_old2, 0, -1, precision, None
 
     res = res1 / res2
     x_new = round(x_old2 - res, precision)
@@ -38,7 +38,7 @@ def do_secant(func, intial1, intial2, precision, epsilon, maxIterations):
         res2 = y_old2 - y_old1
 
         # diverge
-        if(res == 0): return False, x_old2, 0, -1, precision, None
+        if(res2 == 0): return False, x_old2, 0, -1, precision, None
 
         res = res1 / res2
         x_new = round(x_old2 - res, precision)
