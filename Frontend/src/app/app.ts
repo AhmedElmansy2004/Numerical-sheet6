@@ -4,11 +4,12 @@ import { FormsModule } from '@angular/forms';
 import { HttpClient } from '@angular/common/http';
 import { PlotlyChart } from "./plotly-chart/plotly-chart";
 import { EquationPlot } from '../services/equation-plot';
+import { CommonModule, JsonPipe } from '@angular/common';
 
 @Component({
   selector: 'app-root',
   standalone: true,
-  imports: [FormsModule, PlotlyChart],
+  imports: [FormsModule, PlotlyChart, JsonPipe],
   templateUrl: './app.html',
   styleUrls: ['./app.css']
 })
@@ -152,7 +153,12 @@ export class App {
     }
   }
 
-  
+  parsingSteps(steps: any[]) {
+    return steps.map((step, index) => ({
+      iteration: index,
+      ...step
+    }));
+  }
   
 
 }

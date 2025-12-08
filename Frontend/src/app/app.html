@@ -112,7 +112,7 @@
     <div class="steps-container">
       @if (showSteps && response != null) {
         <h2>Steps:</h2>
-        <p> steps are here </p>
+        <p>{{ response.steps | json }}</p>
       }
     </div>
   </div>
