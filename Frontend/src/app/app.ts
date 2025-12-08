@@ -2,11 +2,13 @@ import { Component, signal } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
 import { FormsModule } from '@angular/forms';
 import { HttpClient } from '@angular/common/http';
+import { PlotlyChart } from "./plotly-chart/plotly-chart";
+import { EquationPlot } from '../services/equation-plot';
 
 @Component({
   selector: 'app-root',
   standalone: true,
-  imports: [FormsModule],
+  imports: [FormsModule, PlotlyChart],
   templateUrl: './app.html',
   styleUrls: ['./app.css']
 })
@@ -30,7 +32,11 @@ export class App {
   // Answer from backend
   response :any = null;
 
-  constructor(private http: HttpClient){}
+  constructor(private http: HttpClient, private equationPlot: EquationPlot){}
+
+  update() {
+    this.equationPlot.setEquation(this.functionInput.toLowerCase());
+  }
 
 
   // Submit function
@@ -145,4 +151,8 @@ export class App {
       })
     }
   }
+
+  
+  
+
 }

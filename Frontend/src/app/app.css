@@ -1,151 +1,205 @@
-*{
-    font-family: "Inter", "Segoe UI", Tahoma, sans-serif;
-    font-size: 25px;
-    font-weight: 500;
-    caret-color: transparent;
+/* ===== Base Styles ===== */
+* {
+  font-family: "Inter", "Segoe UI", Tahoma, sans-serif;
+  box-sizing: border-box;
 }
 
+body {
+  margin: 0;
+  padding: 0;
+  background-color: #f0f2f8;
+}
+
+/* ===== Main Container ===== */
 .display {
-    width: 550px;
-    min-height: 550px;
-    background-color: #f7f7f7;
-    border-radius: 15px;
-    box-shadow: 1px 1px 10px 0.5px rgba(0, 0, 0, 0.504);
-    padding: 50px;
+  width: 90%;
+  max-width: 1400px;
+  min-height: 600px;
+  background-color: #f7f7f7;
+  border-radius: 1.5rem;
+  box-shadow: 1px 1px 15px rgba(0, 0, 0, 0.2);
+  padding: 2rem;
+  margin: 2rem auto;
 
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    gap: 30px;
-
-    font-size: 20px;
-
-    overflow: hidden;
-    transition: height 0.5s ease-in-out;
-}
-
-input[type="text"]{
-    caret-color: auto;
-    font-size: 18px;
-    font-weight: 500;
-    color: #333;
-}
-
-.input-bar {
-    border: 2px solid #d0d0d0;
-    padding: 8px;
-    border-radius: 8px;
-    outline: none;
-    transition: 0.2s;
-}
-
-#function-input{
-    width: 100%;
-}
-
-.input-box {
-    width: 10%;
-    border: 2px solid #d0d0d0;
-    padding: 8px;
-    border-radius: 8px;
-    outline: none;
-    transition: 0.2s;
-}
-
-.input-bar:focus, .input-box:focus {
-  border-color: #4d7cff;
-  box-shadow: 0 0 0 2px rgba(77,124,255,0.2);
-}
-
-.show-steps{
-    display: flex;
-    gap: 10px;
-}
-
-
-.show-steps input{
-    width: 28px;
-    height: 28px;
-    scale: 1;
-    transform: translateY(4px);
-}
-
-
-.method-parameters{
   display: flex;
   flex-direction: column;
-
-  gap: 20px;
+  gap: 2rem;
+  overflow: hidden;
+  transition: all 0.3s ease;
 }
 
-.method-parameters label{
-
+/* ===== Top Section: Inputs + Chart ===== */
+.input-part-top {
   display: flex;
   flex-direction: row;
-
-  gap: 15px;
-
+  gap: 2rem;
+  width: 100%;
 }
 
+/* ===== Chart Container ===== */
+.chart-container-right {
+  flex: 2;
+  min-height: 400px;
+  background-color: white;
+  border-radius: 1rem;
+  padding: 1rem;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+  overflow: hidden;
+}
+
+.plot-chart {
+  width: 100% !important;
+  height: 100% !important;
+}
+
+/* ===== Inputs Container ===== */
+.input-container-left {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+/* Labels & Inputs */
+.input-container-left label {
+  display: flex;
+  flex-direction: column;
+  font-size: 18px;
+  font-weight: 500;
+}
+
+.input-bar, .input-box, select {
+  margin-top: 5px;
+  padding: 8px 10px;
+  border: 2px solid #d0d0d0;
+  border-radius: 8px;
+  outline: none;
+  font-size: 16px;
+  transition: all 0.2s ease;
+}
+
+.input-bar:focus, .input-box:focus, select:focus {
+  border-color: #4d7cff;
+  box-shadow: 0 0 0 3px rgba(77,124,255,0.2);
+}
+
+/* Show steps checkbox */
+.show-steps {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.show-steps input {
+  width: 22px;
+  height: 22px;
+}
+
+/* Method-specific parameters */
+.method-parameters {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.method-parameters label {
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+}
+
+/* ===== Calculate Button ===== */
 .calculate-btn {
-  background-color: #4d7cff;      
-  color: white;                   
-  font-size: 20px;                
+  background-color: #4d7cff;
+  color: white;
+  font-size: 18px;
   font-weight: 600;
-  padding: 12px 25px;             
-  border: none;                  
-  border-radius: 10px;           
-  cursor: pointer;               
-  transition: all 0.3s ease;      
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  padding: 12px 20px;
+  border: none;
+  border-radius: 10px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 6px rgba(0,0,0,0.1);
 }
 
 .calculate-btn:hover {
-  background-color: #3a5bcc;      
-  box-shadow: 0 6px 10px rgba(0, 0, 0, 0.15);
-  transform: translateY(-2px);    
+  background-color: #3a5bcc;
+  transform: translateY(-2px);
+  box-shadow: 0 6px 10px rgba(0,0,0,0.15);
 }
 
 .calculate-btn:active {
-  background-color: #2d45a0;      
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
-  transform: translateY(0);       
+  background-color: #2d45a0;
+  transform: translateY(0);
+  box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+}
+
+/* ===== Solution Container ===== */
+.solution-container-down {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
 }
 
 .result-container {
-  margin-top: 5px;
   padding: 15px 25px;
   border-radius: 12px;
   background-color: #e0f0ff;
   border: 2px solid #4d7cff;
   text-align: center;
-  font-size: 22px;
+  font-size: 20px;
   font-weight: 600;
   color: #1a3a5d;
   box-shadow: 1px 2px 8px rgba(0, 0, 0, 0.2);
-  transform: translateY(20px);
   animation: fadeInUp 0.5s forwards;
 }
 
 .result-container h2 {
-  margin: 0 0 0 0;
-  font-size: 28px;
+  margin: 5px 0;
+  font-size: 24px;
   color: #0b2244;
 }
 
 @keyframes fadeInUp {
   0% {
-    opacity: 0;
-    transform: translateY(20px);
+      opacity: 0;
+      transform: translateY(20px);
   }
   100% {
-    opacity: 1;
-    transform: translateY(0);
+      opacity: 1;
+      transform: translateY(0);
   }
 }
 
+/* ===== Responsive ===== */
+@media (max-width: 1200px) {
+  .input-part-top {
+      flex-direction: column;
+  }
+  .chart-container-right {
+      min-height: 300px;
+  }
+  .input-container-left {
+      width: 100%;
+  }
+}
+
+@media (max-width: 768px) {
+  .display {
+      padding: 1rem;
+  }
+  .input-bar, .input-box, select {
+      font-size: 14px;
+      padding: 6px 8px;
+  }
+  .calculate-btn {
+      font-size: 16px;
+      padding: 10px 15px;
+  }
+  .result-container {
+      font-size: 18px;
+  }
+  .result-container h2 {
+      font-size: 20px;
+  }
+}

@@ -1,101 +1,120 @@
 <div class="display">
 
-  <label>
-    Function:
-    <input type="text" class="input-bar" name="functionInput" [(ngModel)]="functionInput">
-  </label>
-
-  <label>
-    Method:
-    <select [(ngModel)]="method" name="method" class="input-bar">
-        <option value="" hidden>Select a method...</option>
-        
-        <option value="bisection">Bisection</option>
-        <option value="false position">False Position</option>
-        <option value="fixed point">Fixed Point</option>
-        <option value="orginal newton">Newton-Raphson</option>
-        <option value="modified newton">Newton-Raphson(Mod)</option>
-        <option value="secant">Secant</option>
-      </select>
-  </label>
-
-  <label>
-    Precision:
-    <input type="number" class="input-bar" name="precision" [(ngModel)]="precision">
-  </label>
-
-  <label>
-    Tolerance:
-    <input type="number" class="input-bar" name="toleranceInput" [(ngModel)]="tolerance">
-  </label>
-
-  <label>
-    Maximum Iterations:
-    <input type="number" class="input-bar" name="maxIterationsInput" [(ngModel)]="maxIterations">
-  </label>
-
-  <div class="show-steps">
-    <label for="showSteps">Show steps:</label>
-    <input type="checkbox" id="showSteps" name="showSteps" [(ngModel)]="showSteps">
-  </div>
-
-  @if(method == "bisection" || method == "false position"){
-    <div class="method-parameters">
-      <label>
-        From:
-        <input type="number" class="input-box" name="fromInput" [(ngModel)]="fromInput">
-      </label>
-      <label>
-        To:
-        <input type="number" class="input-box" name="toInput" [(ngModel)]="toInput">
-      </label>
+  <div class="input-part-top">
+    <div class="chart-container-right">
+      <app-plotly-chart class="plot-chart"></app-plotly-chart>
     </div>
-  }
-  @else if(method == "orginal newton" || method == "modified newton") {
-    <div class="method-parameters">
+
+    <div class="input-container-left">
       <label>
-        Initial Guess:
-        <input type="number" class="input-box" name="fromInput" [(ngModel)]="intialGuess">
+        Function:
+        <input type="text" class="input-bar" name="functionInput" [(ngModel)]="functionInput" (input)="update()">
       </label>
-    </div>
-  }
-  @else if(method == "fixed point") {
-    <div class="method-parameters">
+    
       <label>
-        Initial Guess:
-        <input type="number" class="input-box" name="fromInput" [(ngModel)]="intialGuess">
+        Method:
+        <select [(ngModel)]="method" name="method" class="input-bar">
+            <option value="" hidden>Select a method...</option>
+            
+            <option value="bisection">Bisection</option>
+            <option value="false position">False Position</option>
+            <option value="fixed point">Fixed Point</option>
+            <option value="orginal newton">Newton-Raphson</option>
+            <option value="modified newton">Newton-Raphson(Mod)</option>
+            <option value="secant">Secant</option>
+          </select>
       </label>
+    
+      <label>
+        Precision:
+        <input type="number" class="input-bar" name="precision" [(ngModel)]="precision">
+      </label>
+    
+      <label>
+        Tolerance:
+        <input type="number" class="input-bar" name="toleranceInput" [(ngModel)]="tolerance">
+      </label>
+    
+      <label>
+        Maximum Iterations:
+        <input type="number" class="input-bar" name="maxIterationsInput" [(ngModel)]="maxIterations">
+      </label>
+    
+      <div class="show-steps">
+        <label for="showSteps">Show steps:</label>
+        <input type="checkbox" id="showSteps" name="showSteps" [(ngModel)]="showSteps">
+      </div>
+    
+      @if(method == "bisection" || method == "false position"){
+        <div class="method-parameters">
+          <label>
+            From:
+            <input type="number" class="input-box" name="fromInput" [(ngModel)]="fromInput">
+          </label>
+          <label>
+            To:
+            <input type="number" class="input-box" name="toInput" [(ngModel)]="toInput">
+          </label>
+        </div>
+      }
+      @else if(method == "orginal newton" || method == "modified newton") {
+        <div class="method-parameters">
+          <label>
+            Initial Guess:
+            <input type="number" class="input-box" name="fromInput" [(ngModel)]="intialGuess">
+          </label>
+        </div>
+      }
+      @else if(method == "fixed point") {
+        <div class="method-parameters">
+          <label>
+            Initial Guess:
+            <input type="number" class="input-box" name="fromInput" [(ngModel)]="intialGuess">
+          </label>
+          
+          <label>
+            Enter G(x):
+            <input type="text" class="input-bar" name="fromInput" [(ngModel)]="gx">
+          </label>
+        </div>
+      }
+      @else if(method == "secant") {
+        <div class="method-parameters">
+          <label>
+            Initial Guess 1:
+            <input type="number" class="input-box" name="fromInput" [(ngModel)]="intialGuess">
+          </label>
+    
+          <label>
+            Initial Guess 2:
+            <input type="number" class="input-box" name="fromInput" [(ngModel)]="intialGuess2">
+          </label>
+        </div>
+      }
       
-      <label>
-        Enter G(x):
-        <input type="text" class="input-bar" name="fromInput" [(ngModel)]="gx">
-      </label>
+      <button type="button" class="calculate-btn" (click)="calculate()">Calculate</button>
     </div>
-  }
-  @else if(method == "secant") {
-    <div class="method-parameters">
-      <label>
-        Initial Guess 1:
-        <input type="number" class="input-box" name="fromInput" [(ngModel)]="intialGuess">
-      </label>
-
-      <label>
-        Initial Guess 2:
-        <input type="number" class="input-box" name="fromInput" [(ngModel)]="intialGuess2">
-      </label>
-    </div>
-  }
+  </div>
   
-  <button type="button" class="calculate-btn" (click)="calculate()">Calculate</button>
 
-  @if(response != null){
+  <div class="solution-container-down">
     <div class="result-container">
-      <h2>Calculated Root: {{ response.result }}</h2>
-      <h2>Number of Iterations: {{ response.iterations }}</h2>
-      <h2>Approximate Relative Error: {{ response.rel_err }}</h2>
-      <h2>Correct Significant Figures: {{ response.precision }}</h2>
-      <h2>Execution Time: {{ response.time }}</h2>
+      @if(response != null){
+        <div class="result-container">
+          <h2>Calculated Root: {{ response.result }}</h2>
+          <h2>Number of Iterations: {{ response.iterations }}</h2>
+          <h2>Approximate Relative Error: {{ response.rel_err }}</h2>
+          <h2>Correct Significant Figures: {{ response.precision }}</h2>
+          <h2>Execution Time: {{ response.time }} s</h2>
+        </div>
+      }
     </div>
-  }
+    <div class="steps-container">
+      @if (showSteps && response != null) {
+        <h2>Steps:</h2>
+        <p> steps are here </p>
+      }
+    </div>
+  </div>
 
 </div>
