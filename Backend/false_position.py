@@ -37,6 +37,18 @@ def do_false_position(
         x_r = round(((x_l * y_u) - (x_u * y_l)) / (y_u - y_l), precision)
         y_r = round(getValue(func, x_r), precision)
 
+        solution_steps.append(
+                {
+                    "x_l": x_l,
+                    "x_u": x_u,
+                    "x_r": x_r,
+                    "y_l": y_l,
+                    "y_u": y_u,
+                    "y_r": y_r,
+                    "eps": relative_error,
+                }
+            )
+
         if y_l * y_r < 0:
             x_u = x_r
             y_u = y_r
@@ -47,17 +59,6 @@ def do_false_position(
 
         elif y_r == 0:
             relative_error = getEPS(x_r, prev) if not isFirstIteration else -1
-            solution_steps.append(
-                {
-                    "x_l": x_l,
-                    "x_u": x_u,
-                    "x_r": x_r,
-                    "y_l": y_l,
-                    "y_u": y_u,
-                    "y_r": y_r,
-                    "eps": relative_error,
-                }
-            )
             break
 
         if isFirstIteration:
@@ -66,17 +67,6 @@ def do_false_position(
             relative_error = getEPS(x_r, prev)
 
         if relative_error <= epsilon:
-            solution_steps.append(
-                {
-                    "x_l": x_l,
-                    "x_u": x_u,
-                    "x_r": x_r,
-                    "y_l": y_l,
-                    "y_u": y_u,
-                    "y_r": y_r,
-                    "eps": relative_error,
-                }
-            )
             break
 
     if y_r == 0 or relative_error <= epsilon:

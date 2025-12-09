@@ -14,13 +14,13 @@
       <label>
         Method:
         <select [(ngModel)]="method" name="method" class="input-bar">
-            <option value="" hidden>Select a method...</option>
+            <option value="" hidden>Select a method...</option> 
             
-            <option value="bisection">Bisection</option>
+            <option value="bisection" selected>Bisection</option>
             <option value="false position">False Position</option>
             <option value="fixed point">Fixed Point</option>
             <option value="orginal newton">Newton-Raphson</option>
-            <option value="modified newton">Newton-Raphson(Mod)</option>
+            <option value="modified newton">Newton-Raphson (Modified)</option>
             <option value="secant">Secant</option>
           </select>
       </label>
@@ -112,7 +112,100 @@
     <div class="steps-container">
       @if (showSteps && response != null) {
         <h2>Steps:</h2>
-        <p>{{ response.steps | json }}</p>
+        <table class="steps-table">
+          @if(method == "bisection" || method == "false position"){
+            <thead>
+              <tr>
+                <th>Iteration</th>
+                <th>X<sub>l</sub></th>
+                <th>X<sub>u</sub></th>
+                <th>X<sub>r</sub></th>
+                <th>f(X<sub>l</sub>)</th>
+                <th>f(X<sub>u</sub>)</th>
+                <th>f(X<sub>r</sub>)</th>
+                <th>|𝜺<sub>a</sub>|</th>
+              </tr>
+            </thead>
+
+            <tbody>
+              @for(i of getRange(response.iterations); track i){
+                <tr>
+                  <td>{{i+1}}</td>
+                  <td>{{response.steps[i]['x_l']}}</td>
+                  <td>{{response.steps[i]['x_u']}}</td>
+                  <td>{{response.steps[i]['x_r']}}</td>
+                  <td>{{response.steps[i]['y_l']}}</td>
+                  <td>{{response.steps[i]['y_u']}}</td>
+                  <td>{{response.steps[i]['y_r']}}</td>
+                  @if(response.steps[i]['eps'] == -1){
+                    <td>-</td>    <!--First step: no epsilon-->>
+                  }
+                  @else{
+                    <td>{{response.steps[i]['eps']}}</td>
+                  }
+                  
+                </tr>
+              }
+            </tbody>
+          }
+          @else if(method == "orginal newton" || method == "modified newton" || method == "fixed point"){
+            <thead>
+              <tr>
+                <th>Iteration</th>
+                <th>X<sub>i</sub></th>
+                <th>X<sub>i+1</sub></th>
+                <th>|𝜺<sub>a</sub>|</th>
+              </tr>
+            </thead>
+
+            <tbody>
+              @for(i of getRange(response.iterations); track i){
+                <tr>
+                  <td>{{i+1}}</td>
+                  <td>{{response.steps[i]['x_i']}}</td>
+                  <td>{{response.steps[i]['x_i+1']}}</td>
+                  @if(response.steps[i]['eps'] == -1){
+                    <td>-</td>    <!--First step: no epsilon-->>
+                  }
+                  @else{
+                    <td>{{response.steps[i]['eps']}}</td>
+                  }
+                  
+                </tr>
+              }
+            </tbody>
+          }
+          @else if(method == "secant"){
+            <thead>
+              <tr>
+                <th>Iteration</th>
+                <th>X<sub>i-1</sub></th>
+                <th>X<sub>i</sub></th>
+                <th>X<sub>i+1</sub></th>
+                <th>|𝜺<sub>a</sub>|</th>
+              </tr>
+            </thead>
+
+            <tbody>
+              @for(i of getRange(response.iterations); track i){
+                <tr>
+                  <td>{{i+1}}</td>
+                  <td>{{response.steps[i]['x_i-1']}}</td>
+                  <td>{{response.steps[i]['x_i']}}</td>
+                  <td>{{response.steps[i]['x_i+1']}}</td>
+                  @if(response.steps[i]['eps'] == -1){
+                    <td>-</td>    <!--First step: no epsilon-->>
+                  }
+                  @else{
+                    <td>{{response.steps[i]['eps']}}</td>
+                  }
+                  
+                </tr>
+              }
+            </tbody>
+          }
+        </table>
+
       }
     </div>
   </div>
