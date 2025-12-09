@@ -12,7 +12,7 @@ def do_fixed_point(gx, intial, precision, epsilon=0.00001, maxIterations = 50):
     }]
 
     if(x_new == x_old):
-        return True, x_new, 0, relative_error, precision, solution_steps
+        return True, x_new, 0, -1, precision, solution_steps
 
     relative_error = 120
 

@@ -19,13 +19,13 @@ export class App {
 
   // Text inputs
   method: string = '';
-  functionInput: string = 'x^2 - 4';
-  gx: string = 'x';
+  functionInput: string = '';
+  gx: string = '';
   precision: number = 17;
   tolerance: number = 0.00001;
   maxIterations: number = 50;
-  fromInput: number = 1;
-  toInput: number = 3;
+  fromInput: number = 0;
+  toInput: number = 1;
   intialGuess: number = 0;
   intialGuess2: number = 0;
   showSteps: boolean = false;
