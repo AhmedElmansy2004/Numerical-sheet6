@@ -65,7 +65,7 @@ class Response(BaseModel):
     result: Union[float, None]
     iterations: int
     rel_err: float
-    precision: int
+    precision: int # correct significant digits NOT PRECISION
     time: float
     steps: Union[List[Any], None] = List[Any]
 
@@ -99,7 +99,7 @@ def calculate(request: BracketingRequest):
 
     if(not valid):
         result = None
-        message = "Diverge"
+        message = "Initial guesses do not bracket the root."
         
     if(not request.steps):
         steps = None
@@ -218,6 +218,7 @@ def calculate(request: SecantRequest):
     if(not valid):
         result = None
         message = "Diverge"
+        steps = None
         
     if(not request.steps):
         steps = None

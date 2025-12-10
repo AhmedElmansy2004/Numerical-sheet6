@@ -1,5 +1,6 @@
 from sympy import *
 from sympy.parsing.sympy_parser import parse_expr
+import math
 
 import re
 
@@ -55,14 +56,43 @@ def getSecondDerivative(func, x_val):
     x = symbols('x')
     func = convert(func)
     expr = parse_expr(func)
-    diff_x = expr.diff(x, derivative_count=2)
+    diff_x = expr.diff(x, 2)
     return float(diff_x.subs(x, x_val).evalf())
     
 
 def getEPS(current, previous):
+    if previous == current:
+        print("zerooooo")
     return abs((current - previous) / current) * 100
 
 
 if "__main__" == __name__:
     print(type(getValue('x', 1)))
     print(getValue('x', 1))
+
+
+
+def round_to_significant_digits(x, n):
+    if x == 0:
+        return 0
+
+    sign = 1
+    if x < 0:
+        sign = -1
+        x = -x
+
+    # Compute magnitude: k = floor(log10(x))
+    k = math.floor(math.log10(x))
+
+    # Scale x to have n significant digits:
+    factor = 10**(n - 1 - k)
+    rounded = round(x * factor) / factor
+
+    return sign * rounded
+
+def calculate_significant_digits(epsilon):
+    # epsilon value = ( 0.5 * 10**(2-n) ) %
+    return math.floor(2 - math.log10(epsilon * 2))
+
+def count_all_digits(x):
+    return sum(ch.isdigit() for ch in str(abs(x if not x.is_integer() else round(x))))

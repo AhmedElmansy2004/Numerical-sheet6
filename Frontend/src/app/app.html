@@ -101,6 +101,7 @@
     <div class="result-container">
       @if(response != null){
         <div class="result-container">
+          <h2>Message: {{ response.message }}</h2>
           <h2>Calculated Root: {{ response.result }}</h2>
           <h2>Number of Iterations: {{ response.iterations }}</h2>
           <h2>Approximate Relative Error: {{ response.rel_err }}</h2>
